@@ -32,6 +32,7 @@ def fitCubic(points, leftTangent, rightTangent, error):
 
     # If error not too large, try some reparameterization and iteration
     if maxError < error**2:
+        # print("hi")
         for i in range(20):
             uPrime = reparameterize(bezCurve, points, u)
             bezCurve = generateBezier(points, uPrime, leftTangent, rightTangent)
@@ -45,7 +46,7 @@ def fitCubic(points, leftTangent, rightTangent, error):
     centerTangent = normalize(points[splitPoint-1] - points[splitPoint+1])
     beziers += fitCubic(points[:splitPoint+1], leftTangent, centerTangent, error)
     beziers += fitCubic(points[splitPoint:], -centerTangent, rightTangent, error)
-
+    # print("hi", len(beziers))
     return beziers
 
 

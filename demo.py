@@ -6,7 +6,8 @@ from __future__ import print_function
 from numpy import array
 from bezier import *
 from fitCurves import *
-from Tkinter import *
+from tkinter import *
+import numpy as np
 
 
 # center of bounding box
@@ -19,10 +20,12 @@ class MyCanvas(Canvas):
     def create_polyline(self, points, **kwargs):
         for p1, p2 in zip(points, points[1:]):
             self.create_line(p1, p2, kwargs)
+            # pass
 
 
     def create_bezier(self, b, tag):
-        self.create_polyline([bezier.q(b, t/50.0).tolist() for t in xrange(0, 51)], tag=tag, fill='blue', width='2') # there are better ways to draw a bezier
+        self.create_polyline([bezier.q(b, t/50.0).tolist() for t in range(0, 51)], tag=tag, fill='blue', width='2') # there are better ways to draw a bezier
+        # print("what: ", [bezier.q(b, t/50.0).tolist() for t in range(0, 51)])
         self.create_line(b[0].tolist(), b[1].tolist(), tag=tag)
         self.create_point(b[1][0], b[1][1], 2, fill='black', tag=tag)
         self.create_line(b[3].tolist(), b[2].tolist(), tag=tag)
@@ -108,7 +111,11 @@ class MainObject:
         self.canvas.delete('bezier')
         points = array([self.canvas.pos(p) for p in self.points])
         beziers = fitCurve(points, float(self.spinbox.get())**2)
+        p = np.array(beziers)
+        # print(p)
+        # print("shape:", p.shape)
         for bezier in beziers:
+            # print("bez, ", bezier)
             self.canvas.create_bezier(bezier, tag='bezier')
 
 
